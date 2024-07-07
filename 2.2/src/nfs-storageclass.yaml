@@ -1,8 +1,0 @@
-apiVersion: storage.k8s.io/v1
-kind: StorageClass
-metadata:
-  name: nfs-storage
-provisioner: example.com/nfs
-parameters:
-  server: 127.0.0.1
-  path: /srv/nfs/kubedata

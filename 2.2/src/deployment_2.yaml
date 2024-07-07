@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multitool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multitool
+  template:
+    metadata:
+      labels:
+        app: multitool
+    spec:
+      containers:
+        - name: multitool
+          image: praqma/network-multitool
+          resources:
+            requests:
+              memory: '32Mi'
+              cpu: '100m'
+            limits:
+              memory: '64Mi'
+              cpu: '200m'
+          volumeMounts:
+            - name: nfs-volume
+              mountPath: /mnt/nfs
+      volumes:
+        - name: nfs-volume
+          persistentVolumeClaim:
+            claimName: nfs-pvc

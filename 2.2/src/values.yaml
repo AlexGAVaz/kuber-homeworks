@@ -1,0 +1,7 @@
+nfs:
+  server: 127.0.0.1
+  path: /srv/nfs/kubedata
+
+storageClass:
+  name: nfs-storage
+  defaultClass: true

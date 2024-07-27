@@ -14,12 +14,19 @@ spec:
         app: web-consumer
     spec:
       containers:
-      - command:
-        - sh
-        - -c
-        - while true; do curl auth-db; sleep 5; done
-        image: radial/busyboxplus:curl
-        name: busybox
+        - command:
+            - sh
+            - -c
+            - while true; do curl auth-db.data.svc.cluster.local; sleep 5; done
+          image: radial/busyboxplus:curl
+          name: busybox
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '100m'
+            limits:
+              memory: '64Mi'
+              cpu: '100m'
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,11 +44,18 @@ spec:
         app: auth-db
     spec:
       containers:
-      - image: nginx:1.19.1
-        name: nginx
-        ports:
-        - containerPort: 80
-          protocol: TCP
+        - image: nginx:1.19.1
+          name: nginx
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources:
+            requests:
+              memory: '64Mi'
+              cpu: '100m'
+            limits:
+              memory: '64Mi'
+              cpu: '100m'
 ---
 apiVersion: v1
 kind: Service
@@ -50,8 +64,8 @@ metadata:
   namespace: data
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
+    - port: 80
+      protocol: TCP
+      targetPort: 80
   selector:
     app: auth-db
